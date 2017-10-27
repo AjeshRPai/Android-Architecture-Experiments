@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.ContentLoadingProgressBar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recycler_view:RecyclerView
 
-    private val adapter=MyRecyclerViewAdapter(null)
+    private val adapter=MyRecyclerViewAdapter(ArrayList<MyPojo>())
 
     private lateinit var fab:FloatingActionButton
 
@@ -41,19 +42,28 @@ class MainActivity : AppCompatActivity() {
         fab=findViewById(R.id.add)
 
         fab.setOnClickListener {
-            viewModel.addName(MyPojo("this is one"))
+            disposable.add(viewModel.add(MyPojo(name = "this is a test"))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe{Log.e("added","the item to database")})
         }
+
+        val nameObserver =Observer<List<MyPojo>>(){
+            progress_bar.hide()
+            adapter.additems(ArrayList<MyPojo>(it))
+            recycler_view.visibility=View.VISIBLE
+        }
+        viewModel.getAll().observe(this,nameObserver)
+
 
         progress_bar=findViewById(R.id.contentLoading)
     }
 
     override fun onStart() {
         super.onStart()
-        disposable.addAll(viewModel.getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe{ progress_bar.hide()
-            adapter.additems(it)
-            recycler_view.visibility=View.VISIBLE})
+        Log.e("on start","called")
+
+
 
     }
 

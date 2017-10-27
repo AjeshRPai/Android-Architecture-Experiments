@@ -1,6 +1,7 @@
 package com.example.ajeshpai.androidarchitecture
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,8 @@ class MyRecyclerViewAdapter(private var list:ArrayList<MyPojo>?): RecyclerView.A
     fun additems(list: ArrayList<MyPojo>){
         list.forEachIndexed { index, myPojo ->
             this.list?.add(myPojo)
-            notifyItemInserted(itemCount-1)
+            Log.e("count",itemCount.toString())
+            notifyItemInserted(itemCount)
         }
     }
 

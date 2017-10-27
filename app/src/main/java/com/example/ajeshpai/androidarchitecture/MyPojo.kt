@@ -6,12 +6,9 @@ import android.arch.persistence.room.PrimaryKey
 
 public const val TABLE_NAME="MYPOJOTABLE"
 @Entity(tableName = TABLE_NAME)
- class MyPojo(){
-        var name: String?=""
-        @field: PrimaryKey(autoGenerate = true)
-        var id:Int?=0
+ data class MyPojo(
+       var name: String?=""){
 
-        constructor(name:String):this(){
-                this.name=name
-        }
+    @field: PrimaryKey(autoGenerate = true)
+    var id:Int=0
 }

@@ -1,5 +1,6 @@
 package com.example.ajeshpai.androidarchitecture
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
 
@@ -10,6 +11,6 @@ interface MyDao {
     fun insert(item:MyPojo)
 
     @Query("SELECT * FROM MYPOJOTABLE")
-    fun getItems(): ArrayList<MyPojo>
+    fun getItems(): LiveData<List<MyPojo>>
 
 }
